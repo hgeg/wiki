@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Nightblade | {{title}}</title>
+        <link href="/static/style.css" rel="stylesheet"></link>
+        <script>
+            var title,content;
+            function save() {
+                content = document.getElementById('content');
+                var data = new FormData();
+                data.append('content',content.innerText)
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/edit:{{key}}/');
+                xhr.onload = function () {
+                  if (xhr.status === 200) {
+                    saver = document.getElementById('save');
+                    saver.className = "mini green";
+                  } else {
+                    console.log('Something went wrong...');
+                  }
+                }; 
+                xhr.send(data);
+            }
+
+            function invalidate(e) {
+                saver = document.getElementById('save');
+                saver.className= "mini red";
+
+                if (e.which==115) {
+                    if(e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        save();
+                    }
+                }else if (e.which==108) {
+                    if(e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        selection = window.getSelection();
+                        selectedText = selection.toString();
+                        start = Math.min(selection.anchorOffset,selection.focusOffset);
+                        end = Math.max(selection.anchorOffset,selection.focusOffset);
+                        console.log(start + "-" + end);
+                        nodeValue = selection.focusNode.nodeValue;
+                        console.log(nodeValue.slice(start,end));
+                        newValue = nodeValue.slice(0, start) + "[" + selectedText + "]" + nodeValue.slice(end);
+                        window.getSelection().focusNode.nodeValue = newValue;
+                        content = document.getElementById('content');
+                        content.innerText += "\n" + "[" + selectedText + "]: /" + slugify(selectedText);
+                    }
+                }
+            }
+
+            function slugify(text)
+            {
+              var from = "àáäâèéëêìíïîòóöôùúüûñç";
+              var to   = "aaaaeeeeiiiioooouuuunc";
+
+              for (var i=0, l=from.length ; i<l ; i++) 
+                  text = text.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+
+              slug = text.toString().toLowerCase()
+              .replace(/\s+/g, '-')           // Replace spaces with -
+              .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+              .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+              .replace(/^-+/, '')             // Trim - from start of text
+              .replace(/-+$/, '');            // Trim - from end of text
+
+              return slug;
+            }
+        </script>
+    </head>
+    <body class="container">
+        <span> Editing "{{key}}" page:</span><br/>
+        <div class="row">
+            <div class="col c4">
+                <a class="mini green" id="save" href="#" onclick="save();return false;">save</a>
+                <a class="mini" href="/{{key}}">done</a>
+            </div>
+            <div class="col c8">
+                <span class="mini" style="display:inline-block; width:100%; text-align:right;"> save: Ctrl+S, make link: select text then Ctrl+L</span>
+            </div>
+        </div>
+        <div id="content" class="contentedit" contenteditable="true" onkeypress="invalidate(event)">
+                {{- content -}} 
+        </div>
+    </body>
+</html>

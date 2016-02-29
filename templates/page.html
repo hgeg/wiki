@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Nightblade | {{title}}</title>
+        <link href="/static/style.css" rel="stylesheet"></link>
+    </head>
+    <body class="container">
+        <a class="mini" href="/">← home</a>
+        <a class="mini" href="/edit:{{key}}">edit</a>
+        <section class="content">
+            {{content|safe }}
+        </section>
+    </body>
+</html>

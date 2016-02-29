@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Wiki Index</title>
+        <link href="/static/style.css" rel="stylesheet"></link>
+        <link href="/static/icon.ico" rel="icon"></link>
+    </head>
+    <body class="container">
+        <h2> Wiki </h2>
+        <div class="row">
+            <form method="POST" action="/search">
+                <label for="search">Go to a topic: </label>
+                <input type="text" name="search" id="search">
+            </form>
+        </div>
+
+        <div class="row">
+            <section class="col c6">
+                <h4>Recent Articles:</h4>
+                <ul>
+                    {%- for article in recents -%}
+                    <li><a href="{{article}}">{{article|title|replace('-',' ')}}</a></li>
+                    {%- endfor -%}
+                </ul>
+            </section>
+
+            <section class="col c6">
+                <h4>Random Articles:</h4>
+                <ul>
+                    {%- for article in randoms -%}
+                    <li><a href="{{article}}">{{article|title|replace('-',' ')}}</a></li>
+                    {%- endfor -%}
+                </ul>
+            </section>
+        </div>
+    </body>
+</html>
