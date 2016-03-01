@@ -17,20 +17,28 @@
         <div class="row">
             <section class="col c6">
                 <h4>Recent Articles:</h4>
+                {%- if recents -%}
                 <ul>
                     {%- for article in recents -%}
                     <li><a href="{{article}}">{{article|title|replace('-',' ')}}</a></li>
                     {%- endfor -%}
                 </ul>
+                {%- else -%}
+                 <span> No recent activity. </span>
+                {%- endif -%}
             </section>
 
             <section class="col c6">
                 <h4>Random Articles:</h4>
+                {%- if randoms -%}
                 <ul>
                     {%- for article in randoms -%}
                     <li><a href="{{article}}">{{article|title|replace('-',' ')}}</a></li>
                     {%- endfor -%}
                 </ul>
+                {%- else -%}
+                 <span> No articles to select from. </span>
+                {%- endif -%}
             </section>
         </div>
     </body>

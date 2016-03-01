@@ -19,7 +19,10 @@ app.debug = True
 def index():
     pages = map(lambda fn: fn.split('.')[0], os.listdir('./pages'))
     recents = sorted(pages, key=lambda fn: os.stat('./pages/%s.md'%fn).st_ctime, reverse=True)[:5]
-    randoms = random.sample(pages, 5)
+    try:
+        randoms = random.sample(pages, 5)
+    except: 
+        randoms = []
     return render_template('main.html', recents=recents, randoms=randoms)
 
 @app.route('/<string:key>/', methods=['GET'])
